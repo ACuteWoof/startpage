@@ -6,11 +6,13 @@
   - [] complete color customization
 - [] general layout
   - [] two cards or two sections like in kreatis.io
-- [] time info
+- [x] time info
 - [] site list
 - [] simple search
 - [] todo list
-- [] storage method
+  - [x] local storage
+  - [] firebase
+- [] notes
   - [] local storage
   - [] firebase
 - [] embedded music player
