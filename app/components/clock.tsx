@@ -17,5 +17,6 @@ export default function Clock({ className }: { className?: string }) {
 
     return (<span className={className}>{date.toLocaleTimeString('en-US', {
         hour12: false,
+        timeStyle: 'short',
     })}</span>);
 }

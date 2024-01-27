@@ -84,11 +84,11 @@ function TodoItem({ id, setTodo, todo, className }: {
     id: number, setTodo: Dispatch<SetStateAction<string[]>>, todo: string[], className?: string
 }) {
     return (
-        <div className="flex justify-between items-center hover:bg-black/70 px-4 py-2 rounded-lg">
+        <div className="flex justify-between items-center hover:bg-muted/20 border-b-[1px] px-4 py-2 ">
             <div className="flex items-center">
                 <span>{todo[id]}</span>
             </div>
-            <Button variant="outline" size="icon" onClick={
+            <Button variant="ghost" size="icon" onClick={
                 () => {
                     const newTodo = todo.filter((_, i) => i !== id)
                     setTodo(newTodo)

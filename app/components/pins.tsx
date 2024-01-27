@@ -47,7 +47,7 @@ export default function Pins() {
                 return <Pin key={i} id={i} name={pin.name} site={pin.site} setPins={setPins} pins={pins} />
             })
         }
-        ll{
+        {
             pins && pins.length < 8 &&
             <Dialog>
                 <DialogTrigger>
