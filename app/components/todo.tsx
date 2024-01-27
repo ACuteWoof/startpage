@@ -33,6 +33,10 @@ export default function Todo({ className, ...props }: CardProps) {
         localStorage.setItem("todo", JSON.stringify(todo))
     }, [todo, todoLoadedFromStorage])
 
+    const submit = () => {
+        setTodo([...todo, input])
+        setInput("")
+    }
 
     return (
         <Card className={cn("w-[75%] h-full flex flex-col", className)} {...props}>
@@ -45,17 +49,21 @@ export default function Todo({ className, ...props }: CardProps) {
             </CardHeader>
             <CardContent>
                 <div className="flex w-full items-center space-x-2">
-                    <Input type="text" placeholder="Add a task." onChange={
-                        (e) => setInput(e.target.value)
-                    } value={input} />
-                    <Button
-                        disabled={input.length === 0}
-                        onClick={
-                            () => {
-                                setTodo([...todo, input])
-                                setInput("")
+                    <Input
+                        type="text"
+                        placeholder="Add a task."
+                        onChange={
+                            (e) => setInput(e.target.value)
+                        } value={input}
+                        onKeyDown={
+                            (e) => {
+                                if (e.key === "Enter") submit()
                             }
                         }
+                    />
+                    <Button
+                        disabled={input.length === 0}
+                        onClick={submit}
                     >Add</Button>
                 </div></CardContent>
             <CardContent className="overflow-y-scroll">

@@ -84,3 +84,13 @@
     @apply relative flex-1 rounded-full bg-border;
   }
 }
+
+@layer utilities {
+  .card-deck {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+    justify-content: center;
+    align-items: start;
+  }
+}
