@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon, DesktopIcon, GlobeIcon, MobileIcon, PauseIcon, PlayIcon } from "@radix-ui/react-icons";
-import { actionOnSong, getCurrentSong, getDevices, getLyrics, getQueue, transferPlayback } from "../actions/spotify";
+import { actionOnSong, getCurrentSong, getDevices, getQueue, transferPlayback } from "../actions/spotify";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger, ContextMenuItem } from "@/components/ui/context-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -264,33 +264,4 @@ function DeviceItem({ device, updateFunction }: { device: Spotify.Device, update
             </Tooltip>
         </TooltipProvider>
     )
-}
-
-function Lyrics({ track }: { track: Spotify.Track }) {
-    const [lyrics, setLyrics] = useState<string>("");
-    const [err, setErr] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!track) return;
-        const trackId = track.id;
-        getLyrics(trackId).then((res) => {
-            console.log(res)
-            if (res.error) {
-                setErr(true);
-                return;
-            }
-            setLyrics(res.lyrics);
-        }
-        );
-    }, [track])
-
-    return <Card className="w-full flex flex-col items-center p-4 ">
-        {
-            !err && !lyrics && <div className="text-muted-foreground">Loading...</div>
-        }
-        {
-            err ? <div className="text-muted-foreground">Lyrics not found.</div> :
-                <div className="text-muted-foreground">{lyrics}</div>
-        }
-    </Card>
 }

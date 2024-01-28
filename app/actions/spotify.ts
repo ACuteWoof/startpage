@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { find_lyrics } from "@brandond/findthelyrics";
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -351,30 +352,4 @@ export async function refreshAccessToken() {
     sameSite: "strict",
   });
   return data;
-}
-
-export async function getLyrics(trackId: string) {
-  console.log("getLyrics");
-  const token = await getSpotifyToken();
-  if (typeof token !== "string") return token;
-  const response = await fetch(
-    `https://spclient.wg.spotify.com/color-lyrics/v2/track/${trackId}?format=json&market=from_token`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  try {
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    console.log(e);
-    return {
-      error: {
-        message: "No lyrics found",
-        status: 404,
-      },
-    };
-  }
 }
