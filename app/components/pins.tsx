@@ -110,7 +110,7 @@ function Pin({ className, name, site, id, setPins, pins }: {
     pins: { name: string, site: string }[]
 }) {
     const [err, setErr] = useState<boolean>(false);
-    
+
     if (!name || !site) return null
     if (!site.startsWith("https://")) { site = "https://" + site }
     const domain = new URL(site).hostname
@@ -121,7 +121,7 @@ function Pin({ className, name, site, id, setPins, pins }: {
                 <ContextMenuTrigger>
                     <Card className={"w-[100px] h-[100px] p-2 hover:bg-muted cursor-pointer transition-all duration-150 ease-in-out flex flex-col " + className} onClick={
                         () => {
-                            window.open(site, "_self")
+                            window.open(site, "_blank")
                         }
                     }>
                         <div className="flex-grow h-[75px] flex justify-center items-center">
