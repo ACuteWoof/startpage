@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon, DesktopIcon, GlobeIcon, MobileIcon, PauseIcon, PlayIcon } from "@radix-ui/react-icons";
+import { DesktopIcon, GlobeIcon, MobileIcon, PauseIcon, PlayIcon, TrackNextIcon, TrackPreviousIcon } from "@radix-ui/react-icons";
 import { actionOnSong, getCurrentSong, getDevices, getQueue, transferPlayback } from "../actions/spotify";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger, ContextMenuItem } from "@/components/ui/context-menu";
@@ -154,7 +154,7 @@ export const WebPlayback = ({ token }: { token: string }) => {
                                     }}
                                     size="icon"
                                 >
-                                    <ChevronLeftIcon />
+                                    <TrackPreviousIcon />
                                 </Button>
 
                                 <Button
@@ -182,7 +182,7 @@ export const WebPlayback = ({ token }: { token: string }) => {
                                     }}
                                     size="icon"
                                 >
-                                    <ChevronRightIcon />
+                                    <TrackNextIcon />
                                 </Button>
                             </div>
                         </div>

@@ -61,7 +61,7 @@ export async function getAuthenticationStatus() {
     const data = await response.json();
     if (data.error) {
       if (data.error.status === 401) {
-        await refreshAccessToken();
+        await authenticate();
       }
       return data;
     }
