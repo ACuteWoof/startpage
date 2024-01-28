@@ -34,6 +34,7 @@ export default function Todo({ className, ...props }: CardProps) {
     }, [todo, todoLoadedFromStorage])
 
     const submit = () => {
+        if (input.length === 0) return;
         setTodo([...todo, input])
         setInput("")
     }

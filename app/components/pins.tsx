@@ -20,6 +20,7 @@ import { Label } from "@radix-ui/react-label"
 import Image from "next/image"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { DialogClose } from "@radix-ui/react-dialog"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export default function Pins() {
     const [pins, setPins] = useState<{ name: string, site: string }[]>([])
@@ -39,7 +40,7 @@ export default function Pins() {
         const parsedPins = localStoragePins ? JSON.parse(localStoragePins) : []
         if (parsedPins === pins) return
         localStorage.setItem("pins", JSON.stringify(pins))
-    }, [pins])
+    }, [pins, loaded])
 
     return (<Card className="min-h-[250px] h-max w-full p-4 card-deck gap-4">
         {
@@ -108,43 +109,48 @@ function Pin({ className, name, site, id, setPins, pins }: {
     setPins: Dispatch<SetStateAction<{ name: string, site: string }[]>>
     pins: { name: string, site: string }[]
 }) {
+    const [err, setErr] = useState<boolean>(false);
+    
     if (!name || !site) return null
-    if (!site.startsWith("https://")) site = "https://" + site
+    if (!site.startsWith("https://")) { site = "https://" + site }
     const domain = new URL(site).hostname
 
-    const [err, setErr] = useState<boolean>(false);
-
-    return <ContextMenu>
-        <ContextMenuTrigger>
-            <Card className={"w-[100px] h-[100px] p-2 hover:bg-muted cursor-pointer transition-all duration-150 ease-in-out flex flex-col " + className} onClick={
-                () => {
-                    window.open(site, "_self")
-                }
-            }>
-                <div className="flex-grow h-[75px] flex justify-center items-center">
-                    {err ? <GlobeIcon className="h-[50px] w-[50px] text-muted-foreground"
-                    /> : <Image src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`} alt={name} width={50} height={50}
-                        onError={
-                            () => setErr(true)
+    return <TooltipProvider>
+        <Tooltip>
+            <TooltipTrigger><ContextMenu>
+                <ContextMenuTrigger>
+                    <Card className={"w-[100px] h-[100px] p-2 hover:bg-muted cursor-pointer transition-all duration-150 ease-in-out flex flex-col " + className} onClick={
+                        () => {
+                            window.open(site, "_self")
                         }
-                    />
-                    }</div>
-                <div>
-                    <div className="text-muted-foreground text-center text-sm">{name}</div>
-                </div>
-            </Card></ContextMenuTrigger>
-        <ContextMenuContent>
-            <ContextMenuItem className="text-muted-foreground"
-                onClick={
-                    () => {
-                        const newPins = [...pins]
-                        newPins.splice(id, 1)
-                        setPins(newPins)
-                    }
-                }
-            >
-                Delete
-            </ContextMenuItem>
-        </ContextMenuContent>
-    </ContextMenu>
+                    }>
+                        <div className="flex-grow h-[75px] flex justify-center items-center">
+                            {err ? <GlobeIcon className="h-[50px] w-[50px] text-muted-foreground"
+                            /> : <Image src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`} alt={name} width={50} height={50}
+                                onError={
+                                    () => setErr(true)
+                                }
+                            />
+                            }</div>
+                        <div>
+                            <div className="text-muted-foreground text-center text-sm">{name}</div>
+                        </div>
+                    </Card></ContextMenuTrigger>
+                <ContextMenuContent>
+                    <ContextMenuItem className="text-muted-foreground"
+                        onClick={
+                            () => {
+                                const newPins = [...pins]
+                                newPins.splice(id, 1)
+                                setPins(newPins)
+                            }
+                        }
+                    >
+                        Delete
+                    </ContextMenuItem>
+                </ContextMenuContent>
+            </ContextMenu></TooltipTrigger>
+            <TooltipContent>
+                {site.replaceAll("https://", "").replaceAll("http://", "")}
+            </TooltipContent></Tooltip></TooltipProvider>
 }
