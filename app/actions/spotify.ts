@@ -70,18 +70,7 @@ export async function getAuthenticationStatus() {
       status: 200,
     };
   } catch (e) {
-    cookies().set("spotify_token", "", {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      expires: new Date(0),
-    });
-    cookies().set("spotify_refresh_token", "", {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      expires: new Date(0),
-    });
+    await authenticate();
     return {
       error: {
         status: 500,
