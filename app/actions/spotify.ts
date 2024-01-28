@@ -8,6 +8,7 @@ const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 
 export async function getSpotifyToken() {
+  console.log("getSpotifyToken");
   const accessToken = cookies().get("spotify_token");
   if (!accessToken) {
     return {
@@ -22,6 +23,7 @@ export async function getSpotifyToken() {
 }
 
 export async function authenticate() {
+  console.log("authenticate");
   const scopes: string[] = [
     "user-read-private",
     "user-read-email",
@@ -46,6 +48,7 @@ export async function authenticate() {
 }
 
 export async function getAuthenticationStatus() {
+  console.log("getAuthenticationStatus");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch("https://api.spotify.com/v1/me", {
@@ -67,6 +70,7 @@ export async function getAuthenticationStatus() {
 }
 
 export async function getAllPlaylists() {
+  console.log("getAllPlaylists");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch("https://api.spotify.com/v1/me/playlists", {
@@ -74,11 +78,21 @@ export async function getAllPlaylists() {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function getPlaylist(playlistId: string) {
+  console.log("getPlaylist");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch(
@@ -89,11 +103,21 @@ export async function getPlaylist(playlistId: string) {
       },
     }
   );
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function getPlaylistTracks(playlistId: string) {
+  console.log("getPlaylistTracks");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch(
@@ -104,11 +128,21 @@ export async function getPlaylistTracks(playlistId: string) {
       },
     }
   );
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function getTrack(trackId: string) {
+  console.log("getTrack");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
@@ -116,11 +150,21 @@ export async function getTrack(trackId: string) {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function getCurrentSong() {
+  console.log("getCurrentSong");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch(
@@ -145,6 +189,7 @@ export async function getCurrentSong() {
 }
 
 export async function clearCookies() {
+  console.log("clearCookies");
   cookies().set("spotify_token", "", {
     path: "/",
     httpOnly: true,
@@ -154,6 +199,7 @@ export async function clearCookies() {
 }
 
 export async function actionOnSong(action: string, method: string) {
+  console.log("actionOnSong");
   if (!["PUT", "POST"].includes(method)) {
     return {
       error: {
@@ -185,6 +231,7 @@ export async function actionOnSong(action: string, method: string) {
 }
 
 export async function getQueue() {
+  console.log("getQueue");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch("https://api.spotify.com/v1/me/player/queue", {
@@ -192,11 +239,21 @@ export async function getQueue() {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function getDevices() {
+  console.log("getDevices");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch("https://api.spotify.com/v1/me/player/devices", {
@@ -204,11 +261,21 @@ export async function getDevices() {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function transferPlayback(deviceId: string) {
+  console.log("transferPlayback");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch(`https://api.spotify.com/v1/me/player`, {
@@ -224,6 +291,7 @@ export async function transferPlayback(deviceId: string) {
 }
 
 export async function getPlaybackState() {
+  console.log("getPlaybackState");
   const token = await getSpotifyToken();
   if (typeof token !== "string") return token;
   const response = await fetch(`https://api.spotify.com/v1/me/player`, {
@@ -231,11 +299,21 @@ export async function getPlaybackState() {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-  return data;
+  try {
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
+  }
 }
 
 export async function refreshAccessToken() {
+  console.log("refreshAccessToken");
   const refreshToken = cookies().get("spotify_refresh_token");
   const response = await fetch(
     `https://accounts.spotify.com/api/token?grant_type=refresh_token&refresh_token=${refreshToken}`,
