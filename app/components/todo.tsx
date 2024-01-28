@@ -1,4 +1,4 @@
-import { BellIcon, CheckIcon } from "@radix-ui/react-icons"
+import { CheckIcon, Cross1Icon, ReloadIcon } from "@radix-ui/react-icons"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -16,7 +16,10 @@ import { Input } from "@/components/ui/input"
 type CardProps = React.ComponentProps<typeof Card>
 
 export default function Todo({ className, ...props }: CardProps) {
-    const [todo, setTodo] = useState<string[]>([])
+    const [todo, setTodo] = useState<{
+        content: string,
+        completed: boolean
+    }[]>([])
     const [todoLoadedFromStorage, setTodoLoadedFromStorage] = useState<boolean>(false)
     const [input, setInput] = useState<string>("")
 
@@ -35,7 +38,7 @@ export default function Todo({ className, ...props }: CardProps) {
 
     const submit = () => {
         if (input.length === 0) return;
-        setTodo([...todo, input])
+        setTodo([...todo, { content: input, completed: false }])
         setInput("")
     }
 
@@ -74,7 +77,13 @@ export default function Todo({ className, ...props }: CardProps) {
                         <div className="flex justify-center items-center h-full text-muted-foreground">
                             Nothing to do?
                         </div> :
-                        todo.map((_, i) => <TodoItem key={i} id={i} setTodo={setTodo} todo={todo} />)
+                        todo.sort(
+                            (a, b) => {
+                                if (a.completed && !b.completed) return 1
+                                if (!a.completed && b.completed) return -1
+                                return 0
+                            }
+                        ).map((_, i) => <TodoItem key={i} id={i} setTodo={setTodo} todo={todo} />)
                 }
             </CardContent>
         </Card>
@@ -82,21 +91,39 @@ export default function Todo({ className, ...props }: CardProps) {
 }
 
 function TodoItem({ id, setTodo, todo, className }: {
-    id: number, setTodo: Dispatch<SetStateAction<string[]>>, todo: string[], className?: string
+    id: number, setTodo: Dispatch<SetStateAction<{ content: string, completed: boolean }[]>>, todo: { content: string, completed: boolean }[], className?: string
 }) {
     return (
-        <div className="flex justify-between items-center hover:bg-muted/20 border-b-[1px] px-4 py-2 ">
+        <div className={"flex justify-between items-center hover:bg-muted/20 border-b-[1px] px-4 py-2 " + (
+            todo[id].completed ? "line-through text-muted-foreground" : "text-card-foreground"
+        )}>
             <div className="flex items-center">
-                <span>{todo[id]}</span>
+                <span>{todo[id].content}</span>
             </div>
-            <Button variant="ghost" size="icon" onClick={
-                () => {
-                    const newTodo = todo.filter((_, i) => i !== id)
-                    setTodo(newTodo)
-                }
-            }>
-                <CheckIcon className="w-4 h-4" />
-            </Button>
+            <div className="flex gap-4">
+                <Button variant="ghost" size="icon" onClick={
+                    () => {
+                        const newTodo = todo.filter((_, i) => i !== id)
+                        setTodo(newTodo)
+                    }
+                }>
+                    <Cross1Icon className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={
+                    () => {
+                        const newTodo = todo.map((item, i) => {
+                            if (i === id) {
+                                return { ...item, completed: !item.completed }
+                            }
+                            return item
+                        })
+                        setTodo(newTodo)
+                    }
+                }>
+                    {todo[id].completed ? <ReloadIcon className="h-4 w-4" /> : <CheckIcon className="h-4 w-4" />
+                    }
+                </Button>
+            </div>
         </div>
     )
 }
