@@ -56,17 +56,26 @@ export async function getAuthenticationStatus() {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-  if (data.error) {
-    if (data.error.status === 401) {
-      await refreshAccessToken();
+  try {
+    const data = await response.json();
+    if (data.error) {
+      if (data.error.status === 401) {
+        await refreshAccessToken();
+      }
+      return data;
     }
-    return data;
+    return {
+      data,
+      status: 200,
+    };
+  } catch (e) {
+    return {
+      error: {
+        message: await response.text(),
+        status: await response.status,
+      },
+    };
   }
-  return {
-    data,
-    status: 200,
-  };
 }
 
 export async function getAllPlaylists() {
