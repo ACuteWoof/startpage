@@ -144,7 +144,7 @@ export const WebPlayback = ({ token }: { token: string }) => {
                                 </div>
                             </div>
 
-                            <div className="flex justify-around gap-2">
+                            <div className="flex justify-around gap-4">
                                 <Button
                                     variant="ghost"
                                     className="btn-spotify"
