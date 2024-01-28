@@ -130,13 +130,17 @@ export const WebPlayback = ({ token }: { token: string }) => {
                         />
 
                         <div className="now-playing__side flex flex-col w-full items-center gap-4 justify-around">
-                            <div className="w-[200px]">
+                            <div className="w-[200px] flex flex-col gap-2">
                                 <div
                                     className="now-playing__name w-full font-semibold leading-none tracking-tight">
                                     {current_track?.name ? current_track.name : "Play a track to see details."}
                                 </div>
                                 <div className="now-playing__artist w-full text-sm text-muted-foreground">
-                                    {current_track?.artists[0].name ? current_track.artists[0].name : "Play a track to see details."}
+                                    {current_track?.artists ?
+                                        current_track.artists.map((artist: Spotify.Artist, i: number) => {
+                                            return <span key={i}>{artist.name}{i !== current_track.artists.length - 1 ? ", " : ""}</span>
+                                        })
+                                        : "Play a track to see details."}
                                 </div>
                             </div>
 
