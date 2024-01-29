@@ -9,10 +9,6 @@
 - [x] time info
 - [x] site list
 - [x] simple search
-- [] todo list
-  - [x] local storage
-  - [] firebase
-- [] notes
-  - [x] local storage
-  - [] firebase
-- [] embedded music player
+- [x] todo list
+- [x] notes
+- [x] embedded music player
